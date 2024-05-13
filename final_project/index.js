@@ -27,28 +27,6 @@ app.use("/customer/auth/*", function auth(req,res,next){
     }
 });
 
-app.use("/customer/login", (req,res) => {
-    const username = req.query.username;
-    const password = req.query.password;
-
-    if (!username || !password) {
-        return res.status(404).json({message: "Insufficient data for login"})
-    };
-
-    let validusers = users.filter((u) => {
-        return (u.username == username && u.password == password)
-    });
-
-    if (validusers.length > 0) {
-        let accessToken = jwt.sign( {data: password}, 'access', {expiresIn: 60} )
-        req.session.authorization = { accessToken, username }
-        
-        return res.status(200).json({message: "User logged in, correct credentials"})
-    } else {
-        return res.status(404).json({message: "Invalid credentials"})
-    };
-});
-
 const PORT =5000;
 
 app.use("/customer", customer_routes);
