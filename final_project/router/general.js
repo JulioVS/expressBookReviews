@@ -19,26 +19,47 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.send(JSON.stringify(books,null,4))
+    let myPromise = new Promise((resolve,reject) => {
+        console.log("Inside GET/ Promise")
+        resolve(JSON.stringify(books,null,4))
+    })
+    myPromise.then((data) => {
+        console.log("Inside GET/ Then")
+        return res.send(data)
+    })
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
-  return res.send(books[req.params.isbn])
+public_users.get('/isbn/:isbn', function (req, res) {
+    let myPromise = new Promise((resolve,reject) => {
+        console.log("Inside GET/isbn/ Promise")
+        resolve(books[req.params.isbn])
+    })
+    myPromise.then((data) => {
+        console.log("Inside GET/isbn/ Then")
+        return res.send(data)
+    })
 });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  const author = req.params.author;
-  let index = 0;
-  let selected = [];
-  
-  for (index in books) {
-    if (books[index]['author'] == author) {
-        selected.push(books[index])  
-    }
-  };
-  return res.send(selected);
+public_users.get('/author/:author', function (req, res) {
+    const author = req.params.author;
+    let index = 0;
+    let selected = [];
+
+    let myPromise = new Promise((resolve,reject) => {
+        console.log("Inside GET/author/ Promise")
+        for (index in books) {
+            if (books[index]['author'] == author) {
+                selected.push(books[index])  
+            }
+        };    
+        resolve(selected)
+    })
+    myPromise.then((data) => {
+        console.log("Inside GET/author/ Then")
+        return res.send(data)
+    })
 });
 
 // Get all books based on title
@@ -47,12 +68,19 @@ public_users.get('/title/:title',function (req, res) {
     let index = 0;
     let selected = [];
 
-    for (index in books) {
-      if (books[index]['title'] == title) {
-          selected.push(books[index])  
-      }
-    };
-    return res.send(selected);
+    let myPromise = new Promise((resolve,reject) => {
+        console.log("Inside GET/title/ Promise")
+        for (index in books) {
+            if (books[index]['title'] == title) {
+                selected.push(books[index])  
+            }
+        };    
+        resolve(selected)
+    })
+    myPromise.then((data) => {
+        console.log("Inside GET/title/ Then")
+        return res.send(data)
+    })
   });
 
 //  Get book review
